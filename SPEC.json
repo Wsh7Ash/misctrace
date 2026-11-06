@@ -1,0 +1,38 @@
+{
+  "repo_name": "misctrace",
+  "date": "2026-11-06",
+  "category": "source-review",
+  "one_line_summary": "A small review helper that traces a named function or symbol across several repositories and records the call path it found, so a reviewer can see whether a cross-repo route actually exists.",
+  "problem": "In multi-repo codebases, a claim that one component reaches another often rests on a hop that has not been checked, and reviewers end up reading around rather than confirming the actual path.",
+  "audience": "Strong engineering depth / code-review practice: people reviewing cross-module or cross-repo reachability who want a concrete trace record rather than an assertion.",
+  "solution": "A tool that takes a start symbol and a target symbol, searches a set of repositories for definitions and references, records the path it actually found, and emits a trace with the files, lines, and unresolved hops. It is a review aid, not a full static analyzer.",
+  "key_features": [
+    "Search a set of repositories for a named definition and for references to it",
+    "Record the chain of definitions and references between a start and a target",
+    "Mark unresolved hops explicitly instead of guessing",
+    "Emit a trace report with file paths, line anchors, and the status of each hop",
+    "Easy to run against a few repositories and easy to extend with another search backend"
+  ],
+  "tech_stack": ["python-stdlib", "pytest"],
+  "mvp_scope": "A repository searcher that can find a symbol definition and its references in a small set of repositories, a trace builder that links them into a start-to-target chain, and a report emitter. The MVP covers plain functions/methods in a small set of repositories with a simple text- and AST-light search.",
+  "non_dev_usable": false,
+  "tests_plan": [
+    "Unit tests for definition/references search over small synthetic repositories",
+    "Unit tests for trace construction and unresolved-hop marking",
+    "Unit tests for report formatting and anchor representation"
+  ],
+  "files": {
+    "search.py": "Repository search primitives: find definition, find references",
+    "trace.py": "Trace builder linking definitions and references",
+    "report.py": "Trace report formatting",
+    "cli.py": "Command-line entry point",
+    "tests/test_search.py": "Search primitives tests",
+    "tests/test_trace.py": "Trace construction tests",
+    "tests/test_report.py": "Report formatting tests",
+    "tests/run_tests.sh": "Run pytest",
+    "README.md": "What it traces, how to run it, what it can and cannot prove",
+    "RESULTS.md": "Actual observed results and test output",
+    ".gitignore": "__pycache__, .pytest_cache",
+    "LICENSE": "MIT"
+  }
+}
